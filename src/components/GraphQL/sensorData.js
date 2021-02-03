@@ -1,0 +1,26 @@
+import React from 'react';
+import { useQuery } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
+import LineGraph from "components/Graphs/LineGraph.js"
+
+//Get the measures for a defined patient : test component
+const EXCHANGE_RATES = gql`
+query {
+  getMeasures(patient: "1") {
+    sensors {
+      averagePressureS
+      maxPressureS
+      minPressureS
+    }
+  }
+}
+`;
+
+export function ExchangeRates(){
+  const { loading, error, data } = useQuery(EXCHANGE_RATES);
+
+  if (loading) return <p>Chargement...</p>;
+  if (error) return <p>Erreur :(</p>;
+
+    return <LineGraph data={data} average={[13,32]} ></LineGraph>;
+  }
